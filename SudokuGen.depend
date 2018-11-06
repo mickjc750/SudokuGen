@@ -1,0 +1,54 @@
+# depslib dependency file v1.0
+1538883038 source:d:\codeblocks\sudokugen\main.c
+	<stdio.h>
+	<stdint.h>
+	<string.h>
+	<conio.h>
+	<stdbool.h>
+	"solver.h"
+
+1538875224 d:\codeblocks\sudokugen\solver.h
+
+1538884210 source:d:\codeblocks\sudokugen\solver.c
+	<stdio.h>
+	<stdint.h>
+	<string.h>
+	<stdbool.h>
+	<conio.h>
+
+1539067210 source:d:\micksprojects\source\codeblocks\sudokugen\solver.c
+	<stdio.h>
+	<stdint.h>
+	<string.h>
+	<stdbool.h>
+	<conio.h>
+
+1539067436 source:d:\micksprojects\source\codeblocks\sudokugen\main.c
+	<stdio.h>
+	<stdint.h>
+	<string.h>
+	<conio.h>
+	<stdbool.h>
+	"solver.h"
+
+1539067303 d:\micksprojects\source\codeblocks\sudokugen\solver.h
+
+1539083632 source:d:\dropbox_localsync\micksprojects\source\codeblocks\sudokugen\solver.c
+	<stdio.h>
+	<stdint.h>
+	<string.h>
+	<stdbool.h>
+	<conio.h>
+
+1539087298 source:d:\dropbox_localsync\micksprojects\source\codeblocks\sudokugen\main.c
+	<stdio.h>
+	<inttypes.h>
+	<string.h>
+	<conio.h>
+	<stdbool.h>
+	<stdlib.h>
+	<time.h>
+	"solver.h"
+
+1539067303 d:\dropbox_localsync\micksprojects\source\codeblocks\sudokugen\solver.h
+
