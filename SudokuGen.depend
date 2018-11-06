@@ -40,11 +40,10 @@
 	<stdbool.h>
 	<conio.h>
 
-1539087298 source:d:\dropbox_localsync\micksprojects\source\codeblocks\sudokugen\main.c
+1541525252 source:d:\dropbox_localsync\micksprojects\source\codeblocks\sudokugen\main.c
 	<stdio.h>
 	<inttypes.h>
 	<string.h>
-	<conio.h>
 	<stdbool.h>
 	<stdlib.h>
 	<time.h>

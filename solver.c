@@ -24,7 +24,6 @@ All values are referenced as actual values 1-9 (no 0)
 #include <stdint.h>
 #include <string.h>
 #include <stdbool.h>
-#include <conio.h>
 
 //*******************************************************
 // Defines
@@ -72,14 +71,11 @@ All values are referenced as actual values 1-9 (no 0)
 
 	static uint8_t	cells_solved;
 
-	static char* type_string[3] = {"row", "column", "square"};
-
 //*******************************************************
 // Prototypes
 //*******************************************************
 
 	static void 		init_map(void);
-	static void			show_map(void);
 	static void			cell_solve(uint8_t x, uint8_t y, uint8_t value);
 	static bool		    read_map(void);
 	static uint8_t 		cell_possible_count(struct cell_struct *cell);
@@ -88,7 +84,6 @@ All values are referenced as actual values 1-9 (no 0)
 	static uint8_t 		population_in_rcs(uint8_t type, uint8_t n, uint8_t value, uint8_t *mask);
 	static uint8_t 		finger_step(uint8_t *thumb_ptr, uint8_t *finger_ptr, uint8_t last_index);
 	static void 		mask_or(uint8_t *target, uint8_t *source);
-	static void			debug_array(uint8_t *ptr, uint8_t size);
 
 //	Type conversion
 	static uint8_t		n_of(uint8_t type, uint8_t x, uint8_t y);
@@ -130,7 +125,6 @@ uint8_t solver(char* map)
 	{
 		while(success && (cells_solved < 81))
 		{
-//			show_map();
 			difficulty=1;
             success = sole_candidate();
             if(!success)
@@ -175,11 +169,9 @@ uint8_t solver(char* map)
             };
 			if(!success)
                 difficulty=99;
-			//getch();
 			if(difficulty > retval)
                 retval = difficulty;
         };
-//		show_map();
 	};
 
     return retval;
@@ -308,8 +300,6 @@ static void cell_solve(uint8_t x, uint8_t y, uint8_t value)
 
 	cells_solved++;
 
-//	printf("Solve %i at %i,%i\r\n", value, x+1, y+1);
-
 	//solve cell
 	map_get(COLUMN, x,y)->certain = value;
 
@@ -321,57 +311,6 @@ static void cell_solve(uint8_t x, uint8_t y, uint8_t value)
 		map_get(COLUMN, n_of(COLUMN,x,y), n)->possible[value]=0;	//remove all candidates from column
 		map_get(SQUARE, n_of(SQUARE,x,y), n)->possible[value]=0;	//remove all candidates from square
 		n++;
-	};
-}
-
-static void show_map(void)
-{
-	uint8_t x, y=0;
-	uint8_t cellx, celly;
-	uint8_t notei;
-
-	printf("\r\n###########################################\r\n");
-	while(y!=27)
-	{
-		x=0;
-		celly = y/3;
-		printf("# ");
-		while(x!=27)
-		{
-			cellx = x/3;
-			if(map_get(COLUMN, cellx,celly)->certain)
-			{
-				if((x%3==1) && (y%3==1))
-					printf("%i", map_get(COLUMN, cellx,celly)->certain);
-				else
-					printf(" ");
-			}
-			else
-			{
-				notei = 1 + (x%3) + (y%3)*3;
-				if(map_get(COLUMN, cellx,celly)->possible[notei])
-					printf("%i", map_get(COLUMN, cellx,celly)->possible[notei]);
-				else
-					printf(" ");
-			};
-			if(x%3 == 2)
-			{
-				if(x%9 == 8)
-					printf(" # ");
-				else
-					printf("|");
-			};
-			x++;
-		};
-		printf("\r\n");
-		if(y%3 == 2)
-		{
-			if(y%9 == 8)
-				printf("###########################################\r\n");
-			else
-				printf("# ---+---+--- # ---+---+--- # ---+---+--- #\r\n");
-		};
-		y++;
 	};
 }
 
@@ -537,16 +476,6 @@ static void mask_or(uint8_t *target, uint8_t *source)
 	};
 }
 
-static void debug_array(uint8_t *ptr, uint8_t size)
-{
-	uint8_t index=0;
-
-	while(index != size)
-	{
-		printf("%i ",ptr[index]);
-		index++;
-	};
-}
 //***********************************************************************************************
 // Map addressing (row/column/square) map array should only be accessed via this function
 //***********************************************************************************************
@@ -604,7 +533,6 @@ static bool sole_candidate(void)
 					value += cell_ptr->possible[index];
 					index++;
 				};
-//				printf("Sole candidate %i at %i,%i\r\n", value, x+1, y+1);
 				cell_solve(x,y,value);
 				finished=true;
 				success=true;
@@ -650,7 +578,6 @@ static bool unique_candidate(void)
 				//unique candidate found?
 				if(count==1)
 				{
-//					printf("Unique candidate %i found in %s at %i,%i\r\n",value, type_string[type], posx+1, posy+1);
 					cell_solve(posx, posy, value);
 					finished = true;
 					success = true;
@@ -702,7 +629,6 @@ static bool pointing(uint8_t type_a, uint8_t type_b)
 			{
 				if(remove_from(type_b, n_b, &value, 1, mask))
 				{
-//					printf("Removing %i from %s %i due to pointing from %s %i\r\n", value, type_string[type_b],n_b+1, type_string[type_a], n+1);
 					finished=true;
 					success=true;
 				};
@@ -720,7 +646,6 @@ static bool naked_set(void)
 	uint8_t i_a, i_b, n=0;
 	uint8_t set_size=0;
 	uint8_t set_mask[9];
-	uint8_t index;
 	uint8_t type;
 	bool finished=false, success=false;
 
@@ -750,15 +675,6 @@ static bool naked_set(void)
 				{
 					if(remove_from(type, n, map_get(type, n, i_a)->possible, 10, set_mask))
 					{
-//						printf("Removing candidates ");
-						index=0;
-						while(index !=10)
-						{
-				//			if(map_get(type, n, i_a)->possible[index])
-				//				printf("%i, ", index);
-							index++;
-						};
-	//					printf("from %s %i due to naked set\r\n", type_string[type],n+1);
 						finished=true;
 						success=true;
 					};
@@ -848,14 +764,6 @@ static bool hidden_set(void)
 
 						if(remove_from(type, n, remove_list, 10, tempmask))
 						{
-		//					printf("Hidden set ");
-							index = 0;
-							while(index != set_size)
-							{
-				//				printf("%i ", fingers[index]);
-								index++;
-							};
-			//				printf("in %s %i\r\n", type_string[type], n+1);
 							finished=true;
 							success=true;
 						};
@@ -935,7 +843,6 @@ static bool xwing(void)
 						flag=true;
 					if(flag)
 					{
-	//					printf("Removing %i from %s %i and %i due to xwing on %s %i and %i\r\n", value, type_string[remove_type], i1+1, i2+1, type_string[type], fingers[0]+1, fingers[1]+1);
 						success=true;
 						finished=true;
 					};
